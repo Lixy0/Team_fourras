@@ -1,0 +1,64 @@
+body{
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    background-color: #000000;
+    text-align: center;
+}
+a{
+    color: #808080;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 1s;
+}
+a:hover{
+    color: #ff0000;
+    text-decoration: underline;
+}
+a:visited{
+    color: #000000;
+}
+#game{
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+
+}
+canvas{
+    outline: 1px solid #333;
+}
+
+#scores{
+
+    color: #ffffff;
+    text-align: left;
+    font-size : 2vw;
+    display: flex;
+    justify-content: start;
+    position: absolute;
+    top: 20px;
+    left:20px;
+
+}
+.alignzzz {
+    margin-left: 1vw;
+    vertical-align: middle;
+}
+.align2zzz {
+    margin-left: 1vw;
+    margin-top: 10vw;
+    vertical-align: middle;
+}
+
+.score{
+    color: #ffffff;
+    display: inline-block;
+    vertical-align: middle;
+
+
+}
+.vie{
+    display: inline-block;
+    vertical-align: middle;
+}
