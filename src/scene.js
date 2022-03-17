@@ -2,6 +2,9 @@ class scene extends Phaser.Scene {
   function
 
   preload() {
+    /**
+     * on load nos images objets + la tilemap et le fichier json
+     */
     this.load.image('background', 'assets/images/background.png');
     this.load.image('door', 'assets/images/Door.png');
     this.load.image('key', 'assets/images/Key.png');
@@ -17,8 +20,16 @@ class scene extends Phaser.Scene {
 
 
   create() {
-    this.currentSaveX = 1
-    this.currentSaveY = 1
+    /**
+     * on initialise les valeurs de la sauvegarde
+     * @type {number}
+     */
+    this.currentSaveX = 0
+    this.currentSaveY = 0
+    /**
+     * creation de la map et du  layer plateforme
+     * @type {Phaser.GameObjects.Image}
+     */
 
     const backgroundImage = this.add.image(0, 0, 'background').setOrigin(0, 0);
     backgroundImage.setScale(2, 0.8);
@@ -26,7 +37,10 @@ class scene extends Phaser.Scene {
     const tileset = map.addTilesetImage('kenny_simple_platformer', 'tiles');
     this.platforms = map.createStaticLayer('Platforms', tileset, 0, 200);
     this.platforms.setCollisionByProperty({collides:true})
-
+    /**
+     * on créer les multiple groupe des layers objets
+     * @type {Phaser.Physics.Arcade.Group}
+     */
     this.doors=this.physics.add.group({
       allowGravity: false,
       immovable: true
@@ -82,6 +96,12 @@ class scene extends Phaser.Scene {
 
 
   }
+
+  /**
+   * fonction exécuter des lors que le joueur touche un objet "save" qui enregistre les variables du player au moment T + désactive la collision de l'objet pour ne pas réexécuter a chaque collision
+   * @param player
+   * @param saves
+   */
   sauvegarde(player, saves) {
     console.log("current", this.currentSaveX, this.currentSaveY)
     this.currentSaveX = player.x
@@ -106,7 +126,7 @@ class scene extends Phaser.Scene {
 
 
   update() {
-    this.moves.setVelocityX(0)
+    this.moves.setVelocityX(0)//pour pouvoir "pousser" l'objet
     if (this.moveSprite.body.velocityX>10){
       this.moveSprite.setVelocityX(0)
     }
