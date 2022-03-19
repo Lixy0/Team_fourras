@@ -37,25 +37,35 @@ class scene extends Phaser.Scene {
     const tileset = map.addTilesetImage('kenny_simple_platformer', 'tiles');
     this.platforms = map.createStaticLayer('Platforms', tileset, 0, 200);
     this.platforms.setCollisionByProperty({collides:true})
+
+
+
     /**
      * on créer les multiple groupe des layers objets
      * @type {Phaser.Physics.Arcade.Group}
      */
+    /** groupe porte */
     this.doors=this.physics.add.group({
       allowGravity: false,
       immovable: true
     })
     map.getObjectLayer('Door').objects.forEach((doors)=>{
-      const DoorSprite = this.doors.create(doors.x, doors.y +9+ doors.height, 'door').setOrigin(0);
+      const DoorSprite = this.doors.create(doors.x, doors.y +9+ doors.height, 'door').setOrigin(0).key=1;
     });
+    this.doors.children.entries[1].key=3 //cette porte nécessite 3 celfs
+
+/** groupe des clefs */
     this.key=this.physics.add.group({
       allowGravity: false,
       immovable: true
     })
     map.getObjectLayer('key').objects.forEach((key)=>{
-      const keySprite = this.key.create(key.x, key.y +200- key.height, 'key').setOrigin(0);
+      const keySprite = this.key.create(key.x, key.y +200- key.height, 'key').setOrigin(0).key=1;
     });
 
+
+
+/** groupe des objets déplaçable*/
     this.moves = this.physics.add.group({
       allowGravity: true,
       immovable: false
@@ -64,11 +74,13 @@ class scene extends Phaser.Scene {
       this.moveSprite = this.moves.create(move.x, move.y + 100 - move.height, 'move').setOrigin(0);
     });
 
+
+
     this.physics.add.collider(this.moves, this.moveSprite)
     this.physics.add.collider(this.moves, this.platforms)
 
     this.player = new Player(this)
-
+/** gorupe des spike*/
     this.spikes = this.physics.add.group({
       allowGravity: false,
       immovable: true
@@ -107,12 +119,14 @@ class scene extends Phaser.Scene {
     this.currentSaveX = player.x
     this.currentSaveY = player.y
     saves.body.enable = false;
+    this.currentKey = player.key
   }
 
   playerHit(player, spike) {
     player.setVelocity(0, 0);
     player.x = this.currentSaveX
     player.y = this.currentSaveY;
+    player.key= this.currentKey
     player.play('idle', true);
     player.setAlpha(0);
     let tw = this.tweens.add({
@@ -126,10 +140,15 @@ class scene extends Phaser.Scene {
 
 
   update() {
-    this.moves.setVelocityX(0)//pour pouvoir "pousser" l'objet
-    if (this.moveSprite.body.velocityX>10){
-      this.moveSprite.setVelocityX(0)
-    }
+      if (this.player.pousse ){
+          this.player.pousse=false
+      }
+      else {
+          this.moves.setVelocityX(0)
+      }
+    
+
+
 
     if ((this.cursors.space.isDown || this.cursors.up.isDown) && this.player.player.body.onFloor()) {
       this.player.jump()
