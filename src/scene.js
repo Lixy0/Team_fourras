@@ -24,8 +24,9 @@ class scene extends Phaser.Scene {
      * on initialise les valeurs de la sauvegarde
      * @type {number}
      */
-    this.currentSaveX = 0
-    this.currentSaveY = 0
+    this.currentSaveX = 0;
+    this.currentSaveY = 0;
+    this.currentKey= 0;
     /**
      * creation de la map et du  layer plateforme
      * @type {Phaser.GameObjects.Image}
@@ -52,7 +53,7 @@ class scene extends Phaser.Scene {
     map.getObjectLayer('Door').objects.forEach((doors)=>{
       const DoorSprite = this.doors.create(doors.x, doors.y +9+ doors.height, 'door').setOrigin(0).key=1;
     });
-    this.doors.children.entries[1].key=3 //cette porte nécessite 3 celfs
+    this.debug=this.doors.children.entries[1].key=3//cette porte nécessite 3 clefs
 
 /** groupe des clefs */
     this.key=this.physics.add.group({
@@ -92,12 +93,11 @@ class scene extends Phaser.Scene {
     });
     this.physics.add.collider(this.player.player, this.spikes, this.playerHit, null, this);
 
+    /** groupe des saves*/
     this.saves = this.physics.add.group({
       allowGravity: false,
       immovable: true
     });
-
-
     map.getObjectLayer('Save').objects.forEach((save) => {
       const saveSprite = this.saves.create(save.x, save.y + 200 - save.height, 'save').setOrigin(0);
     });
@@ -146,7 +146,7 @@ class scene extends Phaser.Scene {
       else {
           this.moves.setVelocityX(0)
       }
-    
+
 
 
 
